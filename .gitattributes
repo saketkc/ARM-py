@@ -1,0 +1,8 @@
+*.ps filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text
+*.asc filter=lfs diff=lfs merge=lfs -text
+*.sfun filter=lfs diff=lfs merge=lfs -text
+*.inp filter=lfs diff=lfs merge=lfs -text
+*.dat filter=lfs diff=lfs merge=lfs -text
+*.dta filter=lfs diff=lfs merge=lfs -text
+*.f filter=lfs diff=lfs merge=lfs -text
