@@ -1,0 +1,7 @@
+# Book settings
+title: Data Analysis Using Regression and Multilevel/Hierarchjial Models - Andrew Gelman & Jennifer Hill
+author: Saket Choudhary 
+
+latex:
+  latex_documents:
+    targetname: book.tex
