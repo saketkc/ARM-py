@@ -31,6 +31,7 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 4 Linear regression: before and after fitting the model" href="04_Chapter04_Linear_regresion_before_and_after_fitting_the_model.html" />
     <link rel="prev" title="Chapter 2 - Concepts and methods from basic probability and statistics" href="02_Chapter02_Basic_Probability_and_Statistics.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,6 +73,9 @@
   </li>
   <li class="active">
     <a href="">Chapter 3 - Linear regression: the basics</a>
+  </li>
+  <li class="">
+    <a href="04_Chapter04_Linear_regresion_before_and_after_fitting_the_model.html">Chapter 4 Linear regression: before and after fitting the model</a>
   </li>
 </ul>
 </nav>
@@ -155,7 +159,7 @@
 <h1>Chapter 3 - Linear regression: the basics<a class="headerlink" href="#chapter-3-linear-regression-the-basics" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">proplot</span> <span class="k">as</span> <span class="nn">plot</span>
@@ -163,6 +167,11 @@
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+
 
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.labelweight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bold&quot;</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bold&quot;</span>
@@ -172,10 +181,6 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Populating the interactive namespace from numpy and matplotlib
 </pre></div>
-</div>
-<div class="stderr docutils container">
-<pre class="stderr literal-block">/opt/hostedtoolcache/Python/3.7.7/x64/lib/python3.7/site-packages/proplot/config.py:1454: ProPlotWarning: Rebuilding font cache.
-</pre>
 </div>
 </div>
 </div>
@@ -284,7 +289,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">kidiq_df</span><span class="p">[</span><span class="s2">&quot;kid_score&quot;</span><span class="p">],</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">kidiq_df</span><span class="p">[[</span><span class="s2">&quot;mom_hs&quot;</span><span class="p">]]))</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;kid_score ~ mom_hs + 1&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">kidiq_df</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;kid_score ~ mom_hs&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">kidiq_df</span><span class="p">)</span>
 <span class="n">results_hs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">results_hs</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 </pre></div>
@@ -296,8 +301,8 @@
 Dep. Variable:              kid_score   R-squared:                       0.056
 Model:                            OLS   Adj. R-squared:                  0.054
 Method:                 Least Squares   F-statistic:                     25.69
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           5.96e-07
-Time:                        05:25:58   Log-Likelihood:                -1911.8
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           5.96e-07
+Time:                        22:37:21   Log-Likelihood:                -1911.8
 No. Observations:                 434   AIC:                             3828.
 Df Residuals:                     432   BIC:                             3836.
 Df Model:                           1                                         
@@ -323,11 +328,14 @@ Warnings:
 <p>Thus,</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{kid\_score} = 78 + 12 . \mathrm{mom\_hs} + \mathrm{error}\]</div>
-<p>This model summarized the difference in average test scores between childrens of methoers who completed high school against those who did not.</p>
-<p>\begin{align*}
-78 &amp;= \text{Average predicted score for children whose mothers did not complete high scool}\
-78 + 12 &amp;= \text{Average predicted score for children whoses mothers did compelte high school}
-\end{align*}</p>
+<p>This model summarized the difference in average test scores between children of mothers who completed high school against those who did not.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+78 &amp;= \text{Average predicted score for children}\\
+&amp; \text{whose mothers did not complete high school}\\
+78 + 12 &amp;= \text{Average predicted score for children}\\
+&amp;\text{whose mothers did complete high school}
+\end{align*}\end{split}\]</div>
 <p>Thus, children whose mothers have completed high school score 12 points higher on average than children of methoers who haven’t.</p>
 </div>
 <div class="section" id="continuous-predictor">
@@ -346,8 +354,8 @@ Warnings:
 Dep. Variable:              kid_score   R-squared:                       0.201
 Model:                            OLS   Adj. R-squared:                  0.199
 Method:                 Least Squares   F-statistic:                     108.6
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           7.66e-23
-Time:                        05:25:58   Log-Likelihood:                -1875.6
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           7.66e-23
+Time:                        22:37:21   Log-Likelihood:                -1875.6
 No. Observations:                 434   AIC:                             3755.
 Df Residuals:                     432   BIC:                             3763.
 Df Model:                           1                                         
@@ -387,8 +395,8 @@ Warnings:
 Dep. Variable:              kid_score   R-squared:                       0.214
 Model:                            OLS   Adj. R-squared:                  0.210
 Method:                 Least Squares   F-statistic:                     58.72
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           2.79e-23
-Time:                        05:25:58   Log-Likelihood:                -1872.0
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           2.79e-23
+Time:                        22:37:21   Log-Likelihood:                -1872.0
 No. Observations:                 434   AIC:                             3750.
 Df Residuals:                     431   BIC:                             3762.
 Df Model:                           2                                         
@@ -439,8 +447,8 @@ Warnings:
 Dep. Variable:              kid_score   R-squared:                       0.230
 Model:                            OLS   Adj. R-squared:                  0.225
 Method:                 Least Squares   F-statistic:                     42.84
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           3.07e-24
-Time:                        05:25:58   Log-Likelihood:                -1867.5
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           3.07e-24
+Time:                        22:37:21   Log-Likelihood:                -1867.5
 No. Observations:                 434   AIC:                             3743.
 Df Residuals:                     430   BIC:                             3759.
 Df Model:                           3                                         
@@ -536,11 +544,6 @@ strong multicollinearity or other numerical problems.
 
 <span class="n">m</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">kidiq_hs0</span><span class="p">[</span><span class="s2">&quot;mom_iq&quot;</span><span class="p">],</span> <span class="n">line_hs0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xpoints</span><span class="p">,</span> <span class="n">xpoints</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="c1"># ax.plot(kidiq_hs1[&quot;mom_iq&quot;], line_hs1, color=palette[1])</span>
-<span class="c1"># ax.plot(kidiq_hs0[&quot;mom_iq&quot;], line_hs0, color=palette[0])</span>
-
-
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Mother IQ score&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Kid test score&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -552,7 +555,7 @@ strong multicollinearity or other numerical problems.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_Chapter03_Linear_regression_the_basics_20_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_20_0.png" />
+<img alt="../_images/03_Chapter03_Linear_regression_the_basics_18_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_18_0.png" />
 </div>
 </div>
 </div>
@@ -572,8 +575,8 @@ strong multicollinearity or other numerical problems.
 Dep. Variable:              kid_score   R-squared:                       0.214
 Model:                            OLS   Adj. R-squared:                  0.210
 Method:                 Least Squares   F-statistic:                     58.72
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           2.79e-23
-Time:                        05:25:59   Log-Likelihood:                -1872.0
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           2.79e-23
+Time:                        22:37:21   Log-Likelihood:                -1872.0
 No. Observations:                 434   AIC:                             3750.
 Df Residuals:                     431   BIC:                             3762.
 Df Model:                           2                                         
@@ -613,8 +616,8 @@ Warnings:
 Dep. Variable:              kid_score   R-squared:                       0.201
 Model:                            OLS   Adj. R-squared:                  0.199
 Method:                 Least Squares   F-statistic:                     108.6
-Date:                Sun, 21 Jun 2020   Prob (F-statistic):           7.66e-23
-Time:                        05:25:59   Log-Likelihood:                -1875.6
+Date:                Sat, 20 Jun 2020   Prob (F-statistic):           7.66e-23
+Time:                        22:37:22   Log-Likelihood:                -1875.6
 No. Observations:                 434   AIC:                             3755.
 Df Residuals:                     432   BIC:                             3763.
 Df Model:                           1                                         
@@ -651,7 +654,7 @@ Warnings:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_Chapter03_Linear_regression_the_basics_25_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_25_0.png" />
+<img alt="../_images/03_Chapter03_Linear_regression_the_basics_23_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_23_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -694,7 +697,7 @@ Warnings:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_Chapter03_Linear_regression_the_basics_26_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_26_0.png" />
+<img alt="../_images/03_Chapter03_Linear_regression_the_basics_24_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_24_0.png" />
 </div>
 </div>
 <div class="section" id="todo-displaying-uncertainity-in-the-fitted-regression">
@@ -719,7 +722,7 @@ Warnings:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_Chapter03_Linear_regression_the_basics_29_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_29_0.png" />
+<img alt="../_images/03_Chapter03_Linear_regression_the_basics_27_0.png" src="../_images/03_Chapter03_Linear_regression_the_basics_27_0.png" />
 </div>
 </div>
 </div>
@@ -735,6 +738,7 @@ Warnings:
     <div class='prev-next-bottom'>
         
     <a class='left-prev' id="prev-link" href="02_Chapter02_Basic_Probability_and_Statistics.html" title="previous page">Chapter 2 - Concepts and methods from basic probability and statistics</a>
+    <a class='right-next' id="next-link" href="04_Chapter04_Linear_regresion_before_and_after_fitting_the_model.html" title="next page">Chapter 4 Linear regression: before and after fitting the model</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
